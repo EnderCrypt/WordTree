@@ -2,16 +2,16 @@ package com.github.endercrypt.wordtree.pattern;
 
 public class Not implements BranchPattern
 {
-	private char letter;
+	private BranchPattern pattern;
 
-	public Not(char letter)
+	public Not(BranchPattern pattern)
 	{
-		this.letter = letter;
+		this.pattern = pattern;
 	}
 
 	@Override
 	public boolean doesAllow(char c)
 	{
-		return (c != letter);
+		return pattern.doesAllow(c) == false;
 	}
 }
