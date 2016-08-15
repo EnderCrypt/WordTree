@@ -19,7 +19,7 @@ public class Interpreter
 
 	}
 
-	public static CompiledPattern compile(String patternString)
+	public static Pattern compile(String patternString)
 	{
 		List<BranchPattern> patterns = new ArrayList<>();
 		int i = 0;
@@ -62,6 +62,6 @@ public class Interpreter
 				continue;
 			}
 		}
-		return new CompiledPattern(patterns);
+		return new Pattern(patterns);
 	}
 }

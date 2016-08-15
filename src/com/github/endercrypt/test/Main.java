@@ -9,7 +9,7 @@ import java.util.Set;
 
 import com.github.endercrypt.wordtree.WordTree;
 import com.github.endercrypt.wordtree.exception.WordTreeException;
-import com.github.endercrypt.wordtree.interpret.CompiledPattern;
+import com.github.endercrypt.wordtree.interpret.Pattern;
 import com.github.endercrypt.wordtree.interpret.Interpreter;
 
 public class Main
@@ -19,8 +19,8 @@ public class Main
 	public static void main(String[] args) throws FileNotFoundException, IOException
 	{
 		loadWords();
-		CompiledPattern pattern = Interpreter.compile("m(b-f)[pl]h");
-		Set<String> words = pattern.run(master).getWords(100);
+		Pattern pattern = Interpreter.compile("m(b-f)[pl]h");
+		Set<String> words = pattern.process(master).getWords(100);
 		words.forEach(System.out::println);
 	}
 

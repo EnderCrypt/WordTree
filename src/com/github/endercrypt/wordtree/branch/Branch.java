@@ -1,4 +1,4 @@
-package com.github.endercrypt.wordtree;
+package com.github.endercrypt.wordtree.branch;
 
 import java.io.Serializable;
 import java.util.ArrayList;

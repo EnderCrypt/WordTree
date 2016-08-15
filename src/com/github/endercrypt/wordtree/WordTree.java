@@ -2,6 +2,8 @@ package com.github.endercrypt.wordtree;
 
 import java.io.Serializable;
 
+import com.github.endercrypt.wordtree.branch.Branch;
+
 public class WordTree extends Branch implements Serializable
 {
 	private static final long serialVersionUID = 504967785518953354L;
