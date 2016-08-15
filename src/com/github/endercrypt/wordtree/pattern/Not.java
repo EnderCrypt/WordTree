@@ -1,10 +1,10 @@
 package com.github.endercrypt.wordtree.pattern;
 
-public class Letter implements BranchPattern
+public class Not implements BranchPattern
 {
 	private char letter;
 
-	public Letter(char letter)
+	public Not(char letter)
 	{
 		this.letter = letter;
 	}
@@ -12,6 +12,6 @@ public class Letter implements BranchPattern
 	@Override
 	public boolean doesAllow(char c)
 	{
-		return (c == letter);
+		return (c != letter);
 	}
 }

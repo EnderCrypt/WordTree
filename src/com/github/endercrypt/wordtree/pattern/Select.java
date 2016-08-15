@@ -1,7 +1,5 @@
 package com.github.endercrypt.wordtree.pattern;
 
-import com.github.endercrypt.wordtree.BranchPattern;
-
 public class Select implements BranchPattern
 {
 	private char[] chars;

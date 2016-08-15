@@ -4,11 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.github.endercrypt.wordtree.exception.WordTreeException;
-import com.github.endercrypt.wordtree.pattern.Any;
+import com.github.endercrypt.wordtree.pattern.BranchPattern;
 import com.github.endercrypt.wordtree.pattern.Letter;
-import com.github.endercrypt.wordtree.pattern.Range;
-import com.github.endercrypt.wordtree.pattern.Select;
 
 public abstract class BranchSource
 {
@@ -68,45 +65,6 @@ public abstract class BranchSource
 	public Branch get(String word)
 	{
 		return get(word.toLowerCase().toCharArray());
-	}
-
-	public Branches getByPattern(String patternString)
-	{
-		Branches branches = new Branches(getBranches());
-		int i = 0;
-		while (i < patternString.length())
-		{
-			char c = patternString.charAt(i);
-			i++;
-			if (WordTree.isLetter(c)) // LETTER
-			{
-				branches = branches.get(new Letter(c));
-				continue;
-			}
-			if (c == '?') // ANY
-			{
-				branches = branches.get(new Any());
-				continue;
-			}
-			if (c == '[') // SELECT
-			{
-				int to = patternString.indexOf(']', i);
-				branches = branches.get(new Select(patternString.substring(i, to)));
-				i = to;
-				continue;
-			}
-			if (c == '(') // RANGE
-			{
-				char start = patternString.charAt(i);
-				if (patternString.charAt(i + 1) != '-')
-					throw new WordTreeException("getByPattern ( RANGE ) requires - between, eg (a-c)");
-				char stop = patternString.charAt(i + 2);
-				branches = branches.get(new Range(start, stop));
-				i += 2;
-				continue;
-			}
-		}
-		return branches;
 	}
 
 	public Set<String> getWords()

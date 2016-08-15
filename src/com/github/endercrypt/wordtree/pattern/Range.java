@@ -1,7 +1,5 @@
 package com.github.endercrypt.wordtree.pattern;
 
-import com.github.endercrypt.wordtree.BranchPattern;
-
 public class Range implements BranchPattern
 {
 	private char start;

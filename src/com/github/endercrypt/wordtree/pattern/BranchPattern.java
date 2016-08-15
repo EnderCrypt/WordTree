@@ -1,4 +1,4 @@
-package com.github.endercrypt.wordtree;
+package com.github.endercrypt.wordtree.pattern;
 
 public interface BranchPattern
 {
