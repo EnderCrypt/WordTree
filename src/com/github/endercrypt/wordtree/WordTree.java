@@ -51,31 +51,4 @@ public class WordTree extends Branch implements Serializable
 			}
 		}
 	}
-
-	public static boolean isLetter(String string)
-	{
-		if (string == null)
-			return false;
-		return isLetters(string.toCharArray());
-	}
-
-	public static boolean isLetters(char... chars)
-	{
-		if (chars == null)
-			return false;
-		if (chars.length == 0)
-			return false;
-		for (char c : chars)
-		{
-			if (isLetter(c) == false)
-				return false;
-		}
-		return true;
-	}
-
-	public static boolean isLetter(char c)
-	{
-		int index = c - ASCII_START;
-		return ((index >= 0) && (index <= LETTERS));
-	}
 }

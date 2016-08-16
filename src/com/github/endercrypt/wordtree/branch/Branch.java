@@ -15,8 +15,8 @@ public class Branch extends BranchSource implements Serializable
 	 * 
 	 */
 
-	protected static final int ASCII_START = 97;
-	protected static final int LETTERS = 26;
+	public static final int ASCII_START = 97;
+	public static final int LETTERS = 26;
 
 	private Branch[] branches = new Branch[LETTERS];
 	private String word = null;

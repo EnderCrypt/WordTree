@@ -2,7 +2,7 @@ package com.github.endercrypt.wordtree.interpret;
 
 import java.util.Iterator;
 
-import com.github.endercrypt.wordtree.WordTree;
+import com.github.endercrypt.wordtree.branch.Branch;
 import com.github.endercrypt.wordtree.exception.InterpreterException;
 import com.github.endercrypt.wordtree.pattern.Any;
 import com.github.endercrypt.wordtree.pattern.BranchPattern;
@@ -52,11 +52,11 @@ public class PatternCycler implements Iterator<Character>
 	public BranchPattern nextPattern()
 	{
 		char c = next();
-		if (WordTree.isLetter(c)) // LETTER
+		if (isLetter(c)) // LETTER
 		{
 			return new Letter(c);
 		}
-		if ((c == '?') || (c == '*')) // ANY
+		if (isAny(c)) // ANY
 		{
 			return new Any();
 		}
@@ -74,7 +74,7 @@ public class PatternCycler implements Iterator<Character>
 			String inString = string.substring(from, to);
 			for (char cc : inString.toCharArray())
 			{
-				if (WordTree.isLetter(cc) == false)
+				if (isLetter(cc) == false)
 					throw new InterpreterException("contents of [ ] (position " + from + " to " + to + ") contains illegal character '" + cc + "'");
 			}
 			return new Select(inString);
@@ -82,15 +82,30 @@ public class PatternCycler implements Iterator<Character>
 		if (c == '(') // RANGE
 		{
 			char start = next("missing starting character in ( starting at position " + index);
-			if (WordTree.isLetter(start) == false)
+			if (isAny(start))
+				start = 'a';
+			if (isLetter(start) == false)
 				throw new InterpreterException("Invalid character '" + start + "' at position " + index + ", must be a letter");
 			expect('-');
 			char stop = next("missing ending character in (" + start + "- at position " + (index + 1));
-			if (WordTree.isLetter(stop) == false)
+			if (isAny(start))
+				start = 'z';
+			if (isLetter(stop) == false)
 				throw new InterpreterException("Invalid character '" + stop + "' at position " + index + ", must be a letter");
 			expect(')');
 			return new Range(start, stop);
 		}
 		throw new InterpreterException("Unknown pattern character '" + c + "' (at position " + (index) + ")");
+	}
+
+	private boolean isLetter(char c)
+	{
+		int index = c - Branch.ASCII_START;
+		return ((index >= 0) && (index <= Branch.LETTERS));
+	}
+
+	private boolean isAny(char c)
+	{
+		return ((c == '?') || (c == '*'));
 	}
 }
