@@ -1,16 +1,13 @@
 package com.github.endercrypt.test;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Set;
 
 import com.github.endercrypt.wordtree.WordTree;
-import com.github.endercrypt.wordtree.exception.WordTreeException;
-import com.github.endercrypt.wordtree.interpret.Pattern;
 import com.github.endercrypt.wordtree.interpret.Interpreter;
+import com.github.endercrypt.wordtree.interpret.Pattern;
 
 public class Main
 {
@@ -29,21 +26,7 @@ public class Main
 		File file = new File("words.txt");
 		System.out.print("Loading words from " + file + "... ");
 		long start = System.currentTimeMillis();
-		try (BufferedReader br = new BufferedReader(new FileReader(file)))
-		{
-			String line;
-			while ((line = br.readLine()) != null)
-			{
-				try
-				{
-					master.addWord(line.toLowerCase());
-				}
-				catch (WordTreeException e)
-				{
-					// ignore
-				}
-			}
-		}
+		master.loadFile("words.txt");
 		long miliTaken = System.currentTimeMillis() - start;
 		System.out.println("Done in " + miliTaken + " Miliseconds!");
 	}

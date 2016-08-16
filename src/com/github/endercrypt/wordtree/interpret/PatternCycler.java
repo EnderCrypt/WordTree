@@ -24,8 +24,13 @@ public class PatternCycler implements Iterator<Character>
 	@Override
 	public Character next()
 	{
+		return next("Pattern incomplete (reason unknown)");
+	}
+
+	public Character next(String errorString)
+	{
 		if (hasNext() == false)
-			throw new InterpreterException("Pattern incomplete");
+			throw new InterpreterException(errorString);
 		char c = string.charAt(index);
 		index++;
 		return c;
@@ -39,7 +44,7 @@ public class PatternCycler implements Iterator<Character>
 
 	public void expect(char expect)
 	{
-		char got = next();
+		char got = next("missing " + expect + " at position " + (index + 1));
 		if (got != expect)
 			throw new InterpreterException("Invalid pattern at " + index + " expected " + expect + " got " + got);
 	}
@@ -51,7 +56,7 @@ public class PatternCycler implements Iterator<Character>
 		{
 			return new Letter(c);
 		}
-		if (c == '?') // ANY
+		if ((c == '?') || (c == '*')) // ANY
 		{
 			return new Any();
 		}
@@ -63,17 +68,29 @@ public class PatternCycler implements Iterator<Character>
 		{
 			int from = index;
 			int to = string.indexOf(']', from);
+			if (to == -1)
+				throw new InterpreterException("Missing a closing ] character, to close [ at position " + from);
 			index = to + 1;
-			return new Select(string.substring(from, to));
+			String inString = string.substring(from, to);
+			for (char cc : inString.toCharArray())
+			{
+				if (WordTree.isLetter(cc) == false)
+					throw new InterpreterException("contents of [ ] (position " + from + " to " + to + ") contains illegal character '" + cc + "'");
+			}
+			return new Select(inString);
 		}
 		if (c == '(') // RANGE
 		{
-			char start = next();
+			char start = next("missing starting character in ( starting at position " + index);
+			if (WordTree.isLetter(start) == false)
+				throw new InterpreterException("Invalid character '" + start + "' at position " + index + ", must be a letter");
 			expect('-');
-			char stop = next();
+			char stop = next("missing ending character in (" + start + "- at position " + (index + 1));
+			if (WordTree.isLetter(stop) == false)
+				throw new InterpreterException("Invalid character '" + stop + "' at position " + index + ", must be a letter");
 			expect(')');
 			return new Range(start, stop);
 		}
-		throw new InterpreterException("Unknown pattern character " + c + " (at " + (index) + ")");
+		throw new InterpreterException("Unknown pattern character '" + c + "' (at position " + (index) + ")");
 	}
 }
