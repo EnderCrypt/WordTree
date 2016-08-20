@@ -1,6 +1,5 @@
 package com.github.endercrypt.test;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Set;
@@ -23,10 +22,10 @@ public class Main
 
 	private static void loadWords() throws FileNotFoundException, IOException
 	{
-		File file = new File("words.txt");
+		String file = "words.txt";
 		System.out.print("Loading words from " + file + "... ");
 		long start = System.currentTimeMillis();
-		master.loadFile("words.txt");
+		master.loadFile(file);
 		long miliTaken = System.currentTimeMillis() - start;
 		System.out.println("Done in " + miliTaken + " Miliseconds!");
 	}

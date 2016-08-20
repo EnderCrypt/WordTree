@@ -13,6 +13,8 @@ import com.github.endercrypt.wordtree.pattern.Select;
 
 public class PatternCycler implements Iterator<Character>
 {
+	private static final String defaultMessage = "Pattern incomplete (reason unknown)";
+
 	private int index = 0;
 	private String string;
 
@@ -24,7 +26,7 @@ public class PatternCycler implements Iterator<Character>
 	@Override
 	public Character next()
 	{
-		return next("Pattern incomplete (reason unknown)");
+		return next(defaultMessage);
 	}
 
 	public Character next(String errorString)
@@ -51,7 +53,12 @@ public class PatternCycler implements Iterator<Character>
 
 	public BranchPattern nextPattern()
 	{
-		char c = next();
+		return nextPattern(defaultMessage);
+	}
+
+	public BranchPattern nextPattern(String missingPatternMessage)
+	{
+		char c = next(missingPatternMessage);
 		if (isLetter(c)) // LETTER
 		{
 			return new Letter(c);
@@ -62,7 +69,7 @@ public class PatternCycler implements Iterator<Character>
 		}
 		if (c == '!') // NOT
 		{
-			return new Not(nextPattern());
+			return new Not(nextPattern("missing pattern/letter after ! not at position " + index));
 		}
 		if (c == '[') // SELECT
 		{
